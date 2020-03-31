@@ -1,0 +1,73 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+  <div class="widget widget_search">
+
+
+  <h3>Search.</h3>
+
+
+
+
+    <form class="form-inline my-2 my-lg-0" action="{% url 'search' %}" >
+      <input class="speech-input" type="text" name='q' placeholder="Search" aria-label="Search">
+      
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      {% if query.length < 0 %}
+
+      
+          <p> enter something</p>
+      {% endif %}
+
+      
+
+    </form>
+
+                    
+                      
+                      {% comment %} {% if query %}
+                        <button class="btn btn-outline-primary my-2 my-sm-0" href="{% url 'post_list' %}">clear</button>
+                      {% endif %} {% endcomment %}
+  </div>
+
+  <article class="entry">
+  {% if post.published_date or post.publish_date %}
+      {{ post.published_date }}
+       {{ post.publish_date }}
+    {% else %}
+
+    {% for post in post_list %}
+
+
+    <header class="entry-header">
+
+      <h2 class="entry-title">
+        <a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a>
+
+      </h2>
+
+      <div class="entry-meta">
+        <p>created: {{ post.created_date|date:'g:i A, d-m-Y' }}</p>
+      </div>
+
+
+    </header>
+
+    <div class="entry-content">
+      <p>{{ post.text|truncatechars:200 }}</p>
+    </div>
+
+
+
+    {% endfor %}
+    {% else %}
+          <h2>oops... This page is only for Staffs</h2>
+          <br>
+          <br>
+          <a href="{% url 'public_list'  %}">Take me Back <strong>{{ post.comments.count }}</strong></a>
+
+  </article>
+    {% endif %}
+
+
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "blog/base.html" %}
+
+
+{% block content %}
+
+<div class='row'>
+    <div class='col-12 col-8 mx-auto'>
+                {% if query %}
+
+                     <p class='lead'>You searched for {{ query }}</p>
+                {% else %}
+
+                    <form class="form-inline my-2 my-lg-0" action='/search/'>
+                  <input class="form-control mr-sm-2" type="search" name='q' placeholder="Search" aria-label="Search">
+                  <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                </form>
+
+
+                {% endif %}
+
+
+                {% for post in post_list %}
+
+                    <div class="post">
+                      <a href="{% url 'post_detail' pk=post.pk %}"><h2> {{ post.title }}</h2></a>
+                       
+                        <h1></h1>
+                        <div class="date">
+                            <p>Published on: {{ post.published_date|date:"D M Y"}}</p>
+                        </div>
+                        <p>viewers: {{ post.approve_comment.count }}</p>
+                    </div>
+                {% endfor %}
+
+
+    </div>
+
+
+</div>
+
+{% endblock %}

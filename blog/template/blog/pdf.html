@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>pdf-page</title>
+  </head>
+  <body>
+    <center>
+    <h1><strong>HINDUSTHAN COLLEGE OF ARTS AND SCIENCE</strong></h1>
+    <h3>CIRCULAR REPORT</h3>
+
+    </center>
+    {% for post in post_list %}
+        <div class="post">
+           <h2>{{ post.title }}</a></h2>
+
+            <div class="date">
+                <p>Published on: {{ post.published_date|date:"D M Y"}}</p>
+            </div>
+            <div >
+              {% for comment in post.comments.all %}
+
+              <br>
+
+
+                      <p>{{ comment.created_date }}</p>
+                      <p>{{ comment.text|safe|linebreaks }}</p>
+                      <p>Viewed by: <strong>{{ comment.author }}</strong></p>
+              {% endfor %}
+
+            </div>
+
+
+
+         </div>
+      {% endfor %}
+
+
+
+
+
+
+  </body>
+</html>

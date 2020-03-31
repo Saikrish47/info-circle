@@ -1,0 +1,25 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+  <div class="card">
+    <div class="card-header">
+      <h5 class="card-title">New post</h5>
+    </div>
+    <div class="card-body">
+
+      <form method="POST" class="post-form">
+      {% csrf_token %}
+      <!-- <<input class="author" type="text" name="" value={{user.username}}> -->
+      {{ form.media}}
+      {{ form.as_p }}
+
+      <!-- <button type="submit" class="submit">Save</button> -->
+
+      <button type="submit" class="button btn btn-primary">Save</button>
+
+      </form>
+    </div>
+
+      <script>var editor = new MediumEditor('.editable');</script>
+
+{% endblock %}

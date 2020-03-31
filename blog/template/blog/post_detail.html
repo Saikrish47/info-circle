@@ -1,0 +1,138 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+
+<div class="card">
+
+  <div class="card-header">
+    <h2 class="card-title">{{ post.title }}</h2>
+  </div>
+  <div class="card-body">
+
+  
+
+      {% if post.published_date or post.publish_date %}
+
+        <div class="entry-meta">
+          {{ post.published_date|date:"g:i A, D M Y" }}  {{ post.publish_date|date:"g:i A, D M Y" }}
+        </div>
+
+        {% else %}
+          {% if user.is_authenticated %}
+            <a class="button btn btn-primary" href="{% url 'post_publish' pk=post.pk  %}">Publish</a>
+            {% if user.is_staff %}
+              <a class="btn btn-outline-info" href="{% url 'public_publish' pk=post.pk  %}">Publish all</a>
+            {% endif %}
+          {% endif %}
+        {% endif %}
+        <br>
+        <br>
+      <div class="border text-sm text-muted p-2 mt-1t">
+        <p>{{ post.text|safe|linebreaksbr }}</p>
+      </div>
+
+  </div>
+
+
+
+<br>
+
+      {% if user.is_authenticated and user.is_staff %}
+          <!-- <a class="btn btn-primary" href=" {%url 'post_edit' pk=post.pk %} " ><span class="glyphicon glyphicon-pencil"></span></a> -->
+          <a class="button btn btn-danger" href=" {%url 'post_remove' pk=post.pk %}" >Remove</a>
+      {% endif %}
+<br>
+
+      
+<br>
+      <p> &nbsp &nbsp &nbsp   Register your acknowledgement to the Circular <br><br>&nbsp &nbsp &nbsp If any Remarks mention it in the <strong>Remarks</strong> </p>
+
+<br>
+      {% if user.is_authenticated %}
+        {% if post.comment.author  %}
+          {% for user_logged_in in post.comment.author %}
+            
+              <h4>already registered</h4>
+            {% comment %} {% endif %} {% endcomment %}
+          {% endfor %}
+        {% else %}
+          <a class="btn btn-outline-success" href="{% url 'add_comment_to_post' pk=post.pk %}">
+            <strong><h5>Register</h5> </strong> </a>
+        {% endif %}
+
+        <a  href='{{ post.get_like_url }}'>{{ post.register.count }} Register</a></p>
+        {% if post.user.get_fullname %}
+        <p>Author: {{ post.user.get_fullname}}</p>
+        {% endif %}
+
+      {% else %}
+          <a class="button btn btn-primary" href="{%url 'login'  %}">login</a>
+      {% endif %}
+
+      <div id="comments">
+
+        <br>
+        <br>
+         <h3>&nbsp &nbsp &nbsp Views</h3>
+
+         {% for comment in post.comments.all %}
+
+         <br>
+
+
+             {% if user.is_authenticated or comment.approved_comment %}
+
+
+                     {% if not comment.approved_comment %}
+                         <a class="button btn btn-primary" href="{% url 'comment_remove' pk=comment.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
+                         <a class="button btn btn-primary" href="{% url 'comment_approve' pk=comment.pk %}"><span class="glyphicon glyphicon-ok"></span></a>
+                     {% endif %}
+
+                     <div class="comment-content">
+
+                       <div class="comment-info">
+                          <cite><h3><strong>{{ comment.author }}</strong></h3> </cite>
+
+                          <div class="comment-meta">
+                             {{ comment.created_date }}
+                          </div>
+                       </div>
+
+                       <div class="comment-text">
+                         {{ comment.text|safe|linebreaks }}
+                       </div>
+
+                    </div>
+
+            {% else %}
+              <h2>oops... This page is only for Staffs</h2>
+              <br>
+              <br>
+              <a href="{% url 'public_list'  %}">Take me Back <strong>{{ post.comments.count }}</strong></a>
+
+
+             {% endif %}
+         {% empty %}
+             <p>&nbsp &nbsp &nbsp  No comments posted.</p>
+        {% endfor %}
+
+      
+        {% comment %} {% for users in post.author %}
+          {% if users not in post.comments.all%}
+             {{ users }}
+          {% endif %}   
+        {% endfor %} {% endcomment %}
+
+        {% if user.groups.all.0.name == "student" %}
+          <h1> this is student</h1>
+        {% endif %}
+        {% if user.groups.all.0.name == "hod" %}
+          <h1> this is hod</h1>
+        {% endif %}
+
+          
+
+
+
+
+{% endblock %}

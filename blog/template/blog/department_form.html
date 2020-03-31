@@ -1,0 +1,57 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+
+<div class="card">
+    <div class="card-header">
+      <h5 class="card-title">Department Registration</h5>
+    </div>
+    <div class="card-body">
+
+    {% if user.is_superuser %}
+
+        <br>
+        <br>
+        <br>
+        <form method='POST' action=''> {% csrf_token %}
+                {{ form.as_p }}
+                <input type='submit' class="btn btn-success" >
+        </form>
+
+        <br>
+        <br>
+        <br>
+        {% comment %} <h2>Existing Departments</h2> {% endcomment %}
+        {% if post.department %}
+            {% for post in post_list %}
+            <table id="datatables-clients" class="table table-striped" style="width:100%">
+            <thead>
+                <tr>
+
+                <!-- <th>Circulars</th> -->
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                <!-- <td><img src="img/avatars/avatar.jpg" width="32" height="32" class="rounded-circle my-n1" alt="Avatar"></td> -->
+                <td>
+                    {{ post.department}}
+
+                
+                </td>
+                </tr>
+            </tbody>
+            </table>   
+            {% endfor %}
+        {% endif %}
+    {% else %}
+
+        <h2>oops... This page is only for Staffs</h2>
+        <br>
+        <br>
+        <a href="{% url 'public_list'  %}">Take me Back <strong>{{ post.comments.count }}</strong></a>
+
+    {% endif %}
+</div>
+{% endblock %}

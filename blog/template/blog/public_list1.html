@@ -1,0 +1,28 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+
+  <article class="entry">
+
+    {% for post in post_list %}
+
+
+    <header class="entry-header">
+
+      <h2 class="entry-title">
+        <a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a>
+
+      </h2>
+
+      <div class="entry-meta">
+        <p>Published on: {{ post.publish_date|date:"D M Y"}}</p>
+
+
+    </header>
+
+
+    {% endfor %}
+  </article>
+
+
+{% endblock %}

@@ -1,0 +1,96 @@
+{% extends 'blog/base.html' %}
+  {% block content %}
+    <div class="widget widget_search">
+
+
+      <h3>Search.</h3>
+       {% if query %}
+            <button class="btn btn-outline-primary my-2 my-sm-0" href="{% url 'post_list' %}">clear</button>
+           
+           <p class='lead'>You searched for {{ query }}</p>
+      {% else %}
+
+
+
+
+
+        <form class="form-inline my-2 my-lg-0" action="{% url 'search' %}" >
+          <input class="speech-input" type="text" name='q' placeholder="Search" aria-label="Search">
+          
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+          {% if query.length < 0 %}
+
+          
+              <p> enter something</p>
+          {% endif %}
+
+      {% endif %}    
+
+        </form>
+
+                    
+                      
+                      {% comment %} {% if query %}
+                        <button class="btn btn-outline-primary my-2 my-sm-0" href="{% url 'post_list' %}">clear</button>
+                      {% endif %} {% endcomment %}
+    </div>
+    <div class="card-body">
+      {% if user.is_authenticated %}
+
+      {% comment %} {% for dept in department  %}
+      <form>
+        <option value="{{dept.department_name}}"
+          {% if dept == current_dept %}selected = "selected"{% endif %}>
+          {{dept.department_name|capfirst}}
+        </option>
+      </form>  
+      {% endfor %} {% endcomment %}
+
+      {% comment %} <select>
+        <option value = " {{post.department}}">{{post.department}}</option>
+      </select> {% endcomment %}
+      
+      
+      
+
+      {% for post in post_list %}
+      <table id="datatables-clients" class="table table-striped" style="width:100%" align="left">
+      <thead>
+        <tr>
+
+          <!-- <th>Circulars</th> -->
+
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="card">
+          <!-- <td><img src="img/avatars/avatar.jpg" width="32" height="32" class="rounded-circle my-n1" alt="Avatar"></td> -->
+          <td>
+          
+             <strong>Department :</strong>&nbsp &nbsp{{ post.department}}&nbsp &nbsp &nbsp &nbsp<strong>Catagory :</strong>&nbsp &nbsp{{ post.catagory}}
+
+          
+          </td>
+         
+          <td>
+          <justify>
+            <h2><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h2>
+            <p>Published on: {{ post.published_date|date:"g:i A, D M Y"}}</p>
+            <a href="{% url 'post_detail' pk=post.pk %}">Viewers : &nbsp &nbsp<strong>{{ post.comments.count }}</strong></a>
+          </justify>
+
+          </td>
+        </tr>
+        {% endfor %}
+
+        {% else %}
+          <h2>oops... This page is only for Staffs</h2>
+          <br>
+          <br>
+          <a href="{% url 'public_list'  %}">Take me Back <strong>{{ post.comments.count }}</strong></a>
+
+        {% endif %}
+      </tbody>
+    </table>
+    </div>
+  {% endblock %}

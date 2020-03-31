@@ -1,0 +1,25 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+{% if user.is_authenticated %}
+ <div class="card">
+    <div class="card-header">
+      <h5 class="card-title">Staff Acknowledgement</h5>
+    </div>
+    <div class="card-body">
+  
+    <form method="POST" class="post-form">
+    {% csrf_token %}
+    {{form.as_p}}
+    <button type="submit" class="btn btn-success">Submit</button>
+    </form>
+
+    <script>var editor = new MediumEditor('.editable');</script>
+
+{% else %}
+          <h2>oops... This page is only for Staffs</h2>
+          <br>
+          <br>
+          <a href="{% url 'public_list'  %}">Take me Back <strong>{{ post.comments.count }}</strong></a>
+{% endif %}
+{% endblock %}
